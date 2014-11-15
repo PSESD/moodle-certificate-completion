@@ -28,10 +28,42 @@ class course_category extends base {
 		return $courseCategory;
 	}
 
+	public function getCompletion($user)
+	{
+		$results = [];
+		$expected = count($this->children) + count($this->courses);
+		foreach ($this->children as $childcat) {
+			$result = $childcat->getCompletion($user);
+			if (!is_null($result)) {
+				$results[] = strtotime($result .' 00:00:01');
+			}
+		}
+		foreach ($this->courses as $course) {
+			$result = $course->getCompletion($user);
+			if (!is_null($result)) {
+				$results[] = strtotime($result.' 00:00:01');
+			}
+		}
+		if (!empty($results) && count($results) === $expected) {
+			$max = max($results);
+			return date("Y-m-d", $max);
+		}
+		return null;
+	}
 
 	public function addChild($child)
 	{
 		$this->_children[$child->id] = $child;
+	}
+
+	public function getChildren()
+	{
+		return $this->_children;
+	}
+
+	public function getCourses()
+	{
+		return $this->_courses;
 	}
 
 	public function addCourse($course)

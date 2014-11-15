@@ -30,6 +30,7 @@ function d($var)
     echo '</pre>';
     echo '</div>';
 }
+
 /**
  * Config changes report
  *
@@ -46,7 +47,11 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/mod/certificate/lib.php');
 
 require_once($CFG->dirroot.'/enrol/externallib.php');
+require_once($CFG->dirroot . "/user/profile/lib.php"); // Custom field library.
+require_once($CFG->dirroot . "/lib/filelib.php");      // File handling on description and friends.
 
+
+require_login();
 
 $requestedLevel = optional_param('roll_type', false, PARAM_SAFEDIR);
 if ($requestedLevel) {
@@ -63,7 +68,7 @@ echo '<form method="get" action="." id="settingsform"><div>';
 echo $OUTPUT->heading(get_string('choose_rollup', 'report_seriescompletion'));
 echo '<p id="intro">', get_string('intro', 'report_seriescompletion') , '</p>';
 echo '<p>';
-echo html_writer::select(['course' => 'Course', 'series' => 'Series'], 'roll_type', '', array());
+echo html_writer::select(['course' => 'Course', 'category' => 'Category'], 'roll_type', '', array());
 echo '</p>';
 echo '<p><input type="submit" id="settingssubmit" value="' .
         get_string('export', 'report_seriescompletion') . '" /></p>';

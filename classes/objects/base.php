@@ -9,7 +9,6 @@ class base extends \report_seriescompletion\object {
 	public function init()
 	{
 		parent::init();
-		$this->postLoad();
 	}
 
 	public function postLoad()
@@ -17,26 +16,57 @@ class base extends \report_seriescompletion\object {
 
 	}
 
+	public function getMetaField($id)
+	{
+		if (isset($this->meta[$id])) {
+			return $this->meta[$id];
+		}
+		return null;
+	}
+
 	public static function loadObject($meta)
 	{
 		$id = static::generateId($meta);
 		if (!($object = static::getById($id))) {
 			$object = new static(['id' => $id, 'meta' => $meta]);
-			static::$_registry[get_called_class() . '-' . $id] = $object;
-		} else {
+			if (!isset(static::$_registry[get_called_class()])) {
+				static::$_registry[get_called_class()] = [];
+			}
+			static::$_registry[get_called_class()][$id] = $object;
+			if ($object->isLoaded()) {
+				$object->postLoad();
+			}
+		} elseif (!$object->isLoaded()) {
 			$object->meta = $meta;
+			$object->postLoad();
 		}
 
 		return $object;
 	}
 
 	public static function getById($id, $allowLazy = false) {
-		if (isset(static::$_registry[get_called_class() . '-' . $id])) {
-			return static::$_registry[get_called_class() . '-' . $id];
+		if (!isset(static::$_registry[get_called_class()])) {
+			static::$_registry[get_called_class()] = [];
+		}
+		if (isset(static::$_registry[get_called_class()][$id])) {
+			return static::$_registry[get_called_class()][$id];
 		} elseif ($allowLazy) {
 			return static::loadObject(['id' => $id]);
 		}
 		return false;
+	}
+
+	public function isLoaded()
+	{
+		return count($this->meta) > 1;
+	}
+
+	public static function getRegistrySize()
+	{
+		if (!isset(static::$_registry[get_called_class()])) {
+			static::$_registry[get_called_class()] = [];
+		}
+		return count(static::$_registry[get_called_class()]);
 	}
 
 	public function setId($id)
@@ -50,6 +80,14 @@ class base extends \report_seriescompletion\object {
 			$this->_id = static::generateId($this->meta);
 		}
 		return $this->_id;
+	}
+
+	public static function getAll()
+	{
+		if (!isset(static::$_registry[get_called_class()])) {
+			static::$_registry[get_called_class()] = [];
+		}
+		return static::$_registry[get_called_class()];
 	}
 
 	public static function generateId($meta)

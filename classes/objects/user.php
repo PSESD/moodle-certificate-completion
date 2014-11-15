@@ -3,40 +3,49 @@ namespace report_seriescompletion\objects;
 
 class user extends base {
 	protected $_courses;
-	protected $_certificates = [];
 	protected $_certificate_issues = [];
 
-	public static function load($userRaw)
+	public static function load()
+	{
+		global $CFG;
+		$user = new static;
+		$usersRaw = $user->db->get_records('user');
+		foreach ($usersRaw as $userRaw) {
+			$fields = $user->db->get_recordset_sql("SELECT f.shortname, d.data
+		                                        FROM {user_info_field} f
+		                                        JOIN {user_info_data} d ON (f.id=d.fieldid)
+		                                    WHERE d.userid=". $userRaw->id);
+		    $userRaw->customfields = [];
+		    foreach ($fields as $field) {
+		    	 $userRaw->customfields[$field->shortname] = $field->data;
+		    }
+		    static::loadOne($userRaw);
+		    $fields->close();
+		}
+	}
+
+	public static function loadOne($userRaw)
 	{
 		$userParams = [];
-		$userParams['id'] = $userRaw['id'];
-		$userParams['username'] = $userRaw['username'];
-		$userParams['firstname'] = $userRaw['firstname'];
-		$userParams['lastname'] = $userRaw['lastname'];
-		$userParams['fullname'] = $userRaw['fullname'];
-		$userParams['email'] = $userRaw['email'];
+		$userParams['id'] = $userRaw->id;
+		$userParams['username'] = $userRaw->username;
+		$userParams['firstname'] = $userRaw->firstname;
+		$userParams['lastname'] = $userRaw->lastname;
+		$userParams['email'] = $userRaw->email;
 
 		$customParams = ['SiteName' => 'sitename', 'Program' => 'program', 'starsid' => 'starsid'];
 		foreach ($customParams as $param => $id) {
 			$userParams[$id] = null;
 		}
-		if (!empty($userRaw['customfields'])) {
-			foreach ($userRaw['customfields'] as $field) {
-				if (isset($field['shortname']) && isset($customParams[$field['shortname']])) {
-					$customParam = $customParams[$field['shortname']];
-					$userParams[$customParam] = $field['value'];
-				}
-				//$userParams['fullname'] = $userRaw->fullname;
-			}
+		foreach ($userRaw->customfields as $name => $value) {
+			if (!isset($customParams[$name])) { continue; }
+			$key = $customParams[$name];
+			$userParams[$key] = $value;
 		}
 		$user = static::loadObject($userParams);
-		if ($issues = $user->db->get_records('certificate_issues', array('userid' => $user->id))) {
-			foreach ($issues as $issueRaw) {
-				certificate_issue::load($issueRaw);
-			}
-		}
 		return $user;
 	}
+
 
 	public function getCourses()
 	{
@@ -52,9 +61,9 @@ class user extends base {
 		$this->_certificate_issues[$certificateIssue->id] = $certificateIssue;
 	}
 
-	public function getCertificates()
+	public function getCertificateIssues()
 	{
-		return $this->_certificates;
+		return $this->_certificate_issues;
 	}
 }
 ?>
