@@ -22,7 +22,9 @@ class base extends \report_seriescompletion\object {
 		$id = static::generateId($meta);
 		if (!($object = static::getById($id))) {
 			$object = new static(['id' => $id, 'meta' => $meta]);
+			static::$_registry[$id] = $object;
 		}
+
 		return $object;
 	}
 
