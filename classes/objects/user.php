@@ -4,6 +4,7 @@ namespace report_seriescompletion\objects;
 class user extends base {
 	protected $_courses;
 	protected $_certificates = [];
+	protected $_certificate_issues = [];
 
 	public static function load($userRaw)
 	{
@@ -31,10 +32,7 @@ class user extends base {
 		$user = static::loadObject($userParams);
 		if ($issues = $user->db->get_records('certificate_issues', array('userid' => $user->id))) {
 			foreach ($issues as $issueRaw) {
-				$issue = certificate_issue::load($issueRaw);
-				if ($issue) {
-					$this->addCertificateIssue($issue);
-				}
+				certificate_issue::load($issueRaw);
 			}
 		}
 		return $user;

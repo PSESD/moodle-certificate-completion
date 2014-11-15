@@ -3,6 +3,7 @@ namespace report_seriescompletion\objects;
 
 class course extends base {
 	protected $_certificates = [];
+	protected $_users = [];
 	public static function load($courseRaw) {
 		$courseRaw = get_course($courseRaw->id);
 		$course = static::loadObject(['id' => $courseRaw->id, 'shortname' => $courseRaw->shortname, 'fullname' => $courseRaw->fullname]);
@@ -27,7 +28,7 @@ class course extends base {
         foreach ($usersRaw as $userRaw) {
         	$user = user::load($userRaw);
         	if ($user) {
-        		$this->enrollUser($user);
+        		$course->enrollUser($user);
         	}
         }
 

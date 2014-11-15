@@ -22,15 +22,19 @@ class base extends \report_seriescompletion\object {
 		$id = static::generateId($meta);
 		if (!($object = static::getById($id))) {
 			$object = new static(['id' => $id, 'meta' => $meta]);
-			static::$_registry[$id] = $object;
+			static::$_registry[get_called_class() . '-' . $id] = $object;
+		} else {
+			$object->meta = $meta;
 		}
 
 		return $object;
 	}
 
-	public static function getById($id) {
-		if (isset(static::$_registry[$id])) {
-			return static::$_registry[$id];
+	public static function getById($id, $allowLazy = false) {
+		if (isset(static::$_registry[get_called_class() . '-' . $id])) {
+			return static::$_registry[get_called_class() . '-' . $id];
+		} elseif ($allowLazy) {
+			return static::loadObject(['id' => $id]);
 		}
 		return false;
 	}
