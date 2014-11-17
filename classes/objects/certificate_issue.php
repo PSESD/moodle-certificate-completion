@@ -1,5 +1,5 @@
 <?php
-namespace report_seriescompletion\objects;
+namespace report_certificatecompletion\objects;
 
 class certificate_issue extends base {
 	public static function load($certificateIssueRaw) {

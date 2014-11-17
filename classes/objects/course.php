@@ -1,5 +1,5 @@
 <?php
-namespace report_seriescompletion\objects;
+namespace report_certificatecompletion\objects;
 
 class course extends base {
 	protected $_certificates = [];
@@ -11,6 +11,12 @@ class course extends base {
 		$course = static::loadObject(['id' => $courseRaw->id, 'shortname' => $courseRaw->shortname, 'fullname' => $courseRaw->fullname]);
 
 		return $course;
+	}
+
+
+	public function getIsValid()
+	{
+		return !empty($this->_certificates);
 	}
 
 	public function postLoad()

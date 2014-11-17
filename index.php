@@ -35,7 +35,7 @@ function d($var)
  * Config changes report
  *
  * @package    report
- * @subpackage seriescompletion
+ * @subpackage certificatecompletion
  * @copyright  2009 Petr Skoda
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -55,23 +55,23 @@ require_login();
 
 $requestedLevel = optional_param('roll_type', false, PARAM_SAFEDIR);
 if ($requestedLevel) {
-	\report_seriescompletion\event\report_viewed::create(array('other' => array('roll_type' => $requestedLevel)))->trigger();
-	$reporter = new \report_seriescompletion\extract($requestedLevel);
+	\report_certificatecompletion\event\report_viewed::create(array('other' => array('roll_type' => $requestedLevel)))->trigger();
+	$reporter = new \report_certificatecompletion\extract($requestedLevel);
 	$reporter->serve();
 	exit(0);
 }
-admin_externalpage_setup('reportseriescompletion', '', null, '', array('pagelayout'=>'report'));
+admin_externalpage_setup('reportcertificatecompletion', '', null, '', array('pagelayout'=>'report'));
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('pluginname', 'report_seriescompletion'));
+echo $OUTPUT->heading(get_string('pluginname', 'report_certificatecompletion'));
 echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter centerpara');
 echo '<form method="get" action="." id="settingsform"><div>';
-echo $OUTPUT->heading(get_string('choose_rollup', 'report_seriescompletion'));
-echo '<p id="intro">', get_string('intro', 'report_seriescompletion') , '</p>';
+echo $OUTPUT->heading(get_string('choose_rollup', 'report_certificatecompletion'));
+echo '<p id="intro">', get_string('intro', 'report_certificatecompletion') , '</p>';
 echo '<p>';
 echo html_writer::select(['course' => 'Course', 'category' => 'Category'], 'roll_type', '', array());
 echo '</p>';
 echo '<p><input type="submit" id="settingssubmit" value="' .
-        get_string('export', 'report_seriescompletion') . '" /></p>';
+        get_string('export', 'report_certificatecompletion') . '" /></p>';
 echo '</div></form>';
 echo $OUTPUT->box_end();
 

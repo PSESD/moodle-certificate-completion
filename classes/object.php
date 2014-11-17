@@ -1,5 +1,5 @@
 <?php
-namespace report_seriescompletion;
+namespace report_certificatecompletion;
 
 class Object
 {

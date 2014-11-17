@@ -1,5 +1,5 @@
 <?php
-$string['pluginname'] = 'Series completion';
+$string['pluginname'] = 'Certificate completion';
 $string['choose_rollup'] = 'Choose Roll-up';
 $string['intro'] = 'Please choose the level that you would like to roll up the data.';
 $string['export'] = 'Export';

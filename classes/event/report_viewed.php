@@ -21,7 +21,7 @@
  * @copyright  2014 Petr Skoda
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace report_seriescompletion\event;
+namespace report_certificatecompletion\event;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -58,7 +58,7 @@ class report_viewed extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventreportviewed', 'report_seriescompletion');
+        return get_string('eventreportviewed', 'report_certificatecompletion');
     }
 
     /**
@@ -67,7 +67,7 @@ class report_viewed extends \core\event\base {
      * @return string
      */
     public function get_description() {
-        return "The user with id '$this->userid' viewed the series completion report.";
+        return "The user with id '$this->userid' viewed the certificate completion report.";
     }
 
     /**
@@ -77,7 +77,7 @@ class report_viewed extends \core\event\base {
      */
     protected function get_legacy_logdata() {
         $roll_type = $this->other['roll_type'];
-        return array(SITEID, "admin", "report seriescompletion", "report/seriescompletion/index.php?roll_type=$roll_type", $roll_type);
+        return array(SITEID, "admin", "report certificatecompletion", "report/certificatecompletion/index.php?roll_type=$roll_type", $roll_type);
     }
 
     /**
@@ -86,7 +86,7 @@ class report_viewed extends \core\event\base {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/report/seriescompletion/index.php', array('roll_type' => $this->other['roll_type']));
+        return new \moodle_url('/report/certificatecompletion/index.php', array('roll_type' => $this->other['roll_type']));
     }
 
     /**

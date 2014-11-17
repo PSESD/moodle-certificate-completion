@@ -1,5 +1,5 @@
 <?php
-namespace report_seriescompletion\objects;
+namespace report_certificatecompletion\objects;
 
 class user extends base {
 	protected $_courses;
@@ -32,6 +32,7 @@ class user extends base {
 		$userParams['firstname'] = $userRaw->firstname;
 		$userParams['lastname'] = $userRaw->lastname;
 		$userParams['email'] = $userRaw->email;
+		$userParams['deleted'] = $userRaw->deleted;
 
 		$customParams = ['SiteName' => 'sitename', 'Program' => 'program', 'starsid' => 'starsid'];
 		foreach ($customParams as $param => $id) {
@@ -46,6 +47,14 @@ class user extends base {
 		return $user;
 	}
 
+
+	public function getIsValid()
+	{
+		if (!empty($this->meta['deleted'])) {
+			return false;
+		}
+		return true;
+	}
 
 	public function getCourses()
 	{

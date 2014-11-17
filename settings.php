@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$url = $CFG->wwwroot . '/report/seriescompletion/index.php';
-    $ADMIN->add('reports', new admin_externalpage('reportseriescompletion', get_string('pluginname', 'report_seriescompletion'), $url));
+$url = $CFG->wwwroot . '/report/certificatecompletion/index.php';
+    $ADMIN->add('reports', new admin_externalpage('reportcertificatecompletion', get_string('pluginname', 'report_certificatecompletion'), $url));
 
 // no report settings
 $settings = null;

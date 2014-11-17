@@ -2,7 +2,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-    'report/seriescompletion:view' => array(
+    'report/certificatecompletion:view' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(

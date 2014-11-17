@@ -1,7 +1,7 @@
 <?php
-namespace report_seriescompletion\objects;
+namespace report_certificatecompletion\objects;
 
-class base extends \report_seriescompletion\object {
+class base extends \report_certificatecompletion\object {
 	protected static $_registry = [];
 	protected $_id;
 	public $meta;
@@ -82,10 +82,24 @@ class base extends \report_seriescompletion\object {
 		return $this->_id;
 	}
 
-	public static function getAll()
+	public function getIsValid()
+	{
+		return true;
+	}
+
+	public static function getAll($onlyValid = true)
 	{
 		if (!isset(static::$_registry[get_called_class()])) {
 			static::$_registry[get_called_class()] = [];
+		}
+		if ($onlyValid) {
+			$valid = [];
+			foreach (static::$_registry[get_called_class()] as $key => $test) {
+				if ($test->isValid) {
+					$valid[$key] = $test;
+				}
+			}
+			return $valid;
 		}
 		return static::$_registry[get_called_class()];
 	}

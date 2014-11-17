@@ -1,5 +1,5 @@
 <?php
-namespace report_seriescompletion;
+namespace report_certificatecompletion;
 
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->libdir . '/coursecatlib.php');
@@ -100,7 +100,7 @@ class extract extends object {
 		if ($this->error || !file_exists($this->getFilePath())) {
 			throw new \Exception("Creation of report failed (".$this->error.").");
 		}
-		\send_file($this->getFilePath(), 'series_completion_'. $this->type .'_'.date("Y-m-d") .'.csv', 'default' , 0, false, true, 'application/csv');
+		\send_file($this->getFilePath(), 'certificate_completion_'. $this->type .'_'.date("Y-m-d") .'.csv', 'default' , 0, false, true, 'application/csv');
 	}
 
 	public function cleanFile()
@@ -126,7 +126,7 @@ class extract extends object {
 	    }
 	    $path = [];
 	    $path[] = $CFG->dataroot;
-	    $path[] = $dataPath = 'admin_report_seriescompletiontemp';
+	    $path[] = $dataPath = 'admin_report_certificatecompletiontemp';
 	    $path[] = date("Y-m-d_H-i-s") .'-'. $this->type .'.csv';
 	    \make_upload_directory($dataPath);
 	    return $this->_filePath = implode(DIRECTORY_SEPARATOR, $path);
@@ -139,7 +139,7 @@ class extract extends object {
 	    }
 	    $path = [];
 	    $path[] = $CFG->dataroot;
-	    $path[] = $dataPath = 'admin_report_seriescompletiontemp';
+	    $path[] = $dataPath = 'admin_report_certificatecompletiontemp';
 	    $path[] = 'data_cache.csv';
 	    \make_upload_directory($dataPath);
 	    return $this->_cacheFilePath = implode(DIRECTORY_SEPARATOR, $path);

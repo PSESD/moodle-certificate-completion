@@ -1,5 +1,5 @@
 <?php
-namespace report_seriescompletion\objects;
+namespace report_certificatecompletion\objects;
 
 class certificate extends base {
 	protected $_certificate_issues = [];
